@@ -1,0 +1,36 @@
+function get_nvmrc_search_path(){
+  local DIR=$1
+  local PATH="$DIR/.nvmrc"
+
+  echo $PATH
+}
+
+function nvmrc_selector(){
+  builtin cd "$@"
+
+  local DIR=$(pwd)
+  local DEPTH=$(( $(grep -o '/' <<< $DIR | wc -l) + 1 ))
+
+  while true; do
+    local NVMRC_PATH=$(get_nvmrc_search_path "$DIR")
+
+    if [[ -f $NVMRC_PATH ]]; then
+      local CURRENT_NODE_VERSION=$(nvm current)
+      local TARGET_NODE_VERSION="$(cat $NVMRC_PATH)"
+
+      if [[ $CURRENT_NODE_VERSION != $TARGET_NODE_VERSION ]]; then
+        nvm use
+      fi
+
+      break
+    fi
+
+    if [[ -z $DIR ]]; then
+      break
+    fi
+
+    DIR="${DIR%/*}"
+  done
+}
+
+alias cd='nvmrc_selector'

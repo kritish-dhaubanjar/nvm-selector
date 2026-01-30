@@ -13,3 +13,6 @@ echo "source $HOME/.nvm_selector_bashrc" | tee -a ~/.bashrc
 ```shell
 source ~/.bashrc
 ```
+
+#### Preview:
+![nvm_selector_bashrc](https://github.com/user-attachments/assets/49f29839-a43b-4736-9fdf-b3d9e03395fd)
